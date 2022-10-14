@@ -2,12 +2,14 @@ import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 
-// import { Container } from './styles';
+interface Props {
+  name: string;
+}
 
-export const Participant: React.FC = () => {
+export const Participant: React.FC<Props> = ({name}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.name}>Gustavo</Text>
+      <Text style={styles.name}>{name}</Text>
 
       <TouchableOpacity style={styles.button} >
         <Text style={styles.buttonText}>-</Text>
