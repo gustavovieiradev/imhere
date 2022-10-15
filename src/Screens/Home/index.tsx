@@ -1,19 +1,22 @@
+import { useState } from "react";
 import { Alert, FlatList, ListRenderItem, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Participant } from "../../components/Participant";
 import { styles } from "./styles";
 
 export default function Home() {
 
-  const participants = ['Rodrigo', 'Vini', 'Diego', 'Biro', 'Nome1', 'Nome2', 'Nome3', 'Nome4', 'Nome5'];
+  const [participants, setParticipants] = useState<string[]>([]);
+  const [participantName, setParticipantName] = useState('');
 
   function handleAddParticipant() {
-    if (participants.includes('Rodrigo')) {
+    if (participants.includes(participantName)) {
       return Alert.alert(
         'Participante Existe',
         "Já existe um participante na lista com esse nome!"
       )
     }
-    console.log('add participant')
+    setParticipants(prevState => [...prevState, participantName])
+    setParticipantName('')
   }
 
   function handleParticipantRemove(name: string) {
@@ -23,7 +26,7 @@ export default function Home() {
       [
         {
           text: 'Sim',
-          onPress: () => Alert.alert("Deletado")
+          onPress: () => setParticipants(prevState => prevState.filter(participant => participant !== name))
         },
         {
           text: 'Não',
@@ -57,7 +60,12 @@ export default function Home() {
       </Text>
       
       <View style={styles.form}>
-        <TextInput style={styles.input} placeholder="Nome do participante" placeholderTextColor="#6b6b6b" />
+        <TextInput style={styles.input} 
+          placeholder="Nome do participante" 
+          placeholderTextColor="#6b6b6b" 
+          onChangeText={setParticipantName}
+          value={participantName}
+        />
 
         <TouchableOpacity style={styles.button} onPress={handleAddParticipant}>
           <Text style={styles.buttonText}>+</Text>
@@ -71,8 +79,6 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={renderEmptyComponent}
       />
-
-
 
     </View>
   );
